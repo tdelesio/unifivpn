@@ -1,0 +1,81 @@
+{
+  "interfaces": {
+    "ethernet": {
+      "eth1": {
+        "vif": {
+          "2": {
+            "address": ["192.168.2.1/24"],
+            "firewall": {
+              "in": {
+                "ipv6-name": "LANv6_IN",
+                "modify": "detour",
+                "name": "LAN_IN"
+              },
+              "local": {
+                "ipv6-name": "LANv6_LOCAL",
+                "name": "LAN_LOCAL"
+              },
+              "out": {
+                "ipv6-name": "LANv6_OUT",
+                "name": "LAN_OUT"
+              }
+            }
+          }
+        }
+      }
+    },
+    "openvpn": {
+      "vtun0": {
+        "config-file": "/config/user-data/nyc.ovpn"
+      }
+    }
+  }, "firewall": {
+    "source-validation": "disable",
+    "group": {
+      "address-group": {
+        "vpn_ch": {
+          "address": ["192.168.2.0/24"]
+        }
+      }
+    }, "modify": {
+      "detour": {
+        "rule": {
+          "11": {
+            "action": "modify",
+            "modify": {
+              "table": "1"
+            },
+            "source": {
+              "group": {
+                "address-group": "vpn_ch"
+              }
+            }
+          }
+        }
+      }
+    }
+  }, "service": {
+    "nat": {
+      "rule": {
+        "5010": {
+          "outbound-interface": "vtun0",
+          "type": "masquerade"
+        }
+      }
+    }
+  }, "protocols": {
+    "static": {
+      "table": {
+        "1": {
+          "interface-route": {
+            "0.0.0.0/0": {
+              "next-hop-interface": {
+                "vtun0": "''"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
