@@ -45,6 +45,10 @@ This step assumes you are not going to blindly take my configurations and make t
 
 [Reference](https://help.ui.com/hc/en-us/articles/215458888-UniFi-USG-Advanced-Configuration-Using-config-gateway-json)
 
+### Configue VPN Connection on USG
+
+
+
 ## Configure the Cloud Key
 
 So configuring the USG is not persistent.  If you make a change to the GUI at all, all of your configuration changes will be blown away.  That sucks and is not fun removing all the work you have done thus far.  So we need to get to as a perm solution.  
@@ -101,4 +105,18 @@ sudo route add default gw 192.168.2.1 enp3s0
 1. Test to make sure it works.
 ```
 curl -s http://ifconfig.co/json | jq
+```
+
+#Troubleshooting when things go wrong
+VPN servers need to be changed every once in a while.  No idea why...maybe too long on a server.
+
+1. SSH into the gateway (10.0.0.1)
+1. cd to
+```
+/config/user-data
+```
+1. Change the ovpn file to point to a new server (nyc.ovpn)
+1. restart the VPN
+```
+echo y | reset openvpn interface vtun0
 ```
