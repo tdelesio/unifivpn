@@ -8,6 +8,9 @@ These are the instructions on how to setup your Unifi USG/Cloud Key to configure
 * Configure a headless docker host with 2 NIC cards.  1 NIC would be connected to the normal LAN and one NIC would be connected to the VLAN.
 * Have all outbound traffic on the docker host route over the VPN
 
+Good Reference Site:
+[Policy-based routing over VPN with Ubiquiti EdgeRouter](http://mroach.com/2018/03/policy-based-routing-over-vpn-with-ubiquiti-edgerouter/)
+
 ## Setup VLAN
 
 We need to create a new network that is split apart from the rest of the networks.  This will have its own subnet and the gateway to the internet will be a VPN connection.  We also want to bind a WIFI network to this new VLAN
@@ -120,3 +123,8 @@ VPN servers need to be changed every once in a while.  No idea why...maybe too l
 ```
 echo y | reset openvpn interface vtun0
 ```
+1. verify it has an ip
+```
+ip addr show vtun0
+```
+1. Verify your wifi and wired connections are working
